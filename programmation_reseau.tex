@@ -106,9 +106,27 @@
 
 \newpage
 
-\section{Analyse d'un programme client TCP}
-\section{Client TCP ftp myftp}
-\section{Client TCP mydateTCP}
+\section{But des travaux pratiques}
+Le but de ces TP est de maîtriser la programmation réseau par sockets par sockets en langage C sous UNIX.
+\section{Utilisation des commandes unix}
+\subsection{Utilisation des commandes d'analyse réseau}
+Le but de nestat est de nous informer de tous les services qui tournent sur la machine. Les services sont alors divises en trois paquets: NTP, socket du domaine UNIX et TCP.
+\\netstat-a affiche la table de routage IP du noyau
+\\telnet a pour but de se connecter à distance à une machine (nous utilisons pour le test de serveur).
+\subsection{Etude de quelques services Internet}
+telnet www.enseirb.fr 80 puis en appuyant sur entrée cela nous fait "sauter une ligne". En appuyant sur espace puis entrée cela nous affiche le code html de la page visitée puis cela nous ferme la connection.
+\\Après avoir récupéré index.html, le code de retour est "200". Ce code nous indique qu'il n'y a pas eu d'erreur.
+\section{Séances 1, 2 et 3: Programmation réseau par sockets}
+\subsection{Analyse d'un programme client TCP}
+\subsection{Client TCP ftp myftp}
+\subsection{Client TCP mydateTCP}
+Numéro de port: 13
+\subsection{Client UDP mydateUDP}
+\subsection{Analyse d'un programme serveur TCP}
+\subsection{Serveur TCP pingserveurTCP}
+\subsection{Serveur UDP pingserveurUDP, client TCP pingclientUDP}
+\subsection{Serveur wwwserveur}
+\subsection{Serveur TCP lotoserveur}
 
 %%% End document
 \end{document}
