@@ -18,6 +18,8 @@
 \usepackage{fourier}
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
+\usepackage{listings}
+
 
 % English language/hyphenation
 \usepackage[protrusion=true,expansion=true]{microtype}	
@@ -118,14 +120,63 @@ telnet www.enseirb.fr 80 puis en appuyant sur entrée cela nous fait "sauter une
 \\Après avoir récupéré index.html, le code de retour est "200". Ce code nous indique qu'il n'y a pas eu d'erreur.
 \section{Séances 1, 2 et 3: Programmation réseau par sockets}
 \subsection{Analyse d'un programme client TCP}
+On utilise une socket de type TCP. En effet SOCK_STREAM dans le code. 
+Client TCP.Normallement:
+socket()
+connect()
+write/read()
+On retrouve l'enchaînement suivant sur le fichier
+But du programme: code d'erreur 331, on demande d'établir une connection, il nous demande un mot de passe.
+% vérifier programme d'origine
+% ajouter copie écran
 \subsection{Client TCP ftp myftp}
+%code source myftp.c
+%Q4
 \subsection{Client TCP mydateTCP}
-Numéro de port: 13
+Numéro de port: 13 Protocole de transport internet: TCP
+(pour lancer le programme ./mydateTCP brahmane-enseirb.fr)
+%copie écran .
+-> On change le port 13 -> 21
 \subsection{Client UDP mydateUDP}
+%cf Adrian
+On modifie SOCK_STEAM par SOCK_DGRAM
+Programme réalisé:
+\begin{lstlisting}
+sendto(sd,buf,sizeof(buf),0,(struct sockaddr*)&sa,sizeof(sa));
+\end{lstlisting}
+i=sizeof(sa);
+n=recvfrom(sd,buf,sizeof(buf),0,(struct sockaddr*)&sa,&i);
+write(1,buf,n);
 \subsection{Analyse d'un programme serveur TCP}
+Socket utilisé: TCP
+socket()
+bind()
+listen()
+accept()
+read/write()
+\\On retrouve l'enchaînement classique des appels systèmes.
+\\Ce programme compte le nombre de connexion.
+./pingserveur0 22222
+telnet localhost 22222
+%copie d'écran Q7
+%copie d'écran Q7bis
 \subsection{Serveur TCP pingserveurTCP}
+%copie fichier
+%copie d'écran Q8)
+%copie d'écran Q8bis)
+On ne peut pas prendre n'importe quel valeur de port. EN effet certain sont déjà attribués.
+newsd->client
+while(1){
+int n=read(newsd,buf,sizeof(buf));
+write(1,buf,n);
+write(newsd,buf,n);
+}
+Les valeurs des ports en cours d'utilisation ne peuvent être prises.
 \subsection{Serveur UDP pingserveurUDP, client TCP pingclientUDP}
+%cf Adrian
 \subsection{Serveur wwwserveur}
+Protocole HTTP.
+%Q10)
 \subsection{Serveur TCP lotoserveur}
 
 %%% End document
