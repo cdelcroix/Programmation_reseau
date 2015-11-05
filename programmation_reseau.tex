@@ -165,19 +165,23 @@ if(strncmp(buf,"QUIT\n",4)==0){
 \caption{\label{Illustrations/q4} Nouvelle entrée}
 \end{figure}
 \subsection{Client TCP mydateTCP}
-Numéro de port: 13 Protocole de transport internet: TCP
-(pour lancer le programme ./mydateTCP brahmane-enseirb.fr)
-%copie écran .
--> On change le port 13 -> 21
+Numéro de port: 13. Protocole de transport internet à utiliser: TCP.\\
+Par rapport au programme \textit{myftp.c} on change donc le numéro de port de 21 à 13.
+\begin{figure}[h!]
+\leftline{\includegraphics[width=12cm]{Illustrations/q5}}
+\caption{\label{Illustrations/q5}Retour de la date}
+\end{figure}
 \subsection{Client UDP mydateUDP}
 Le but de ce fichier et de renvoyer la date et l'heure gràce à un client UDP (mode non connecté). Pour ce faire il faut modifier le fichier \textit{myftp.c}.
 \\
 Il faut remplacer SOCK\_ STREAM par SOCK\_ DGRAM (propre à l'UDP) lors de la création de la socket.
-\begin{figure}[h!]
-\leftline{\includegraphics[width=12cm]{Illustrations/0}}
-\caption{\label{Illustrations/0}Création de la socket UDP}
-\end{figure}
-
+\begin{verbatim}
+/* Creation de la socket UDP */
+if((sd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+	printf("Probleme lors de la creation de socket\n");
+	exit(1);
+}
+\end{verbatim}
 Pour mettre le service en oeuvre (\textcolor{green}{FTPPORT 13}) on écrit alors le code suivant.
 
 \begin{figure}[h!]
