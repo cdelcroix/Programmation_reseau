@@ -107,9 +107,10 @@
 \tableofcontents
 
 \newpage
-
+%-------------------------------------------------------------------------------------------------------------------------------------
 \section{But des travaux pratiques}
 Le but de ces TP est de maîtriser la programmation réseau par sockets par sockets en langage C sous UNIX.
+%-------------------------------------------------------------------------------------------------------------------------------------
 \section{Utilisation des commandes unix}
 \subsection{Utilisation des commandes d'analyse réseau}
 Le but de nestat est de nous informer de tous les services qui tournent sur la machine. Les services sont alors divises en trois paquets: NTP, socket du domaine UNIX et TCP.
@@ -118,9 +119,10 @@ Le but de nestat est de nous informer de tous les services qui tournent sur la m
 \subsection{Etude de quelques services Internet}
 telnet www.enseirb.fr 80 puis en appuyant sur entrée cela nous fait "sauter une ligne". En appuyant sur espace puis entrée cela nous affiche le code html de la page visitée puis cela nous ferme la connection.
 \\Après avoir récupéré index.html, le code de retour est "200". Ce code nous indique qu'il n'y a pas eu d'erreur.
+%-------------------------------------------------------------------------------------------------------------------------------------
 \section{Séances 1, 2 et 3: Programmation réseau par sockets}
 \subsection{Analyse d'un programme client TCP}
-On utilise une socket de type TCP. En effet SOCK_STREAM dans le code. 
+On utilise une socket de type TCP. En effet SOCK\_STREAM dans le code. 
 Client TCP.Normallement:
 socket()
 connect()
@@ -139,14 +141,14 @@ Numéro de port: 13 Protocole de transport internet: TCP
 -> On change le port 13 -> 21
 \subsection{Client UDP mydateUDP}
 %cf Adrian
-On modifie SOCK_STEAM par SOCK_DGRAM
+On modifie SOCK\_STEAM par SOCK\_DGRAM
 Programme réalisé:
-\begin{lstlisting}
+\begin{verbatim}
 sendto(sd,buf,sizeof(buf),0,(struct sockaddr*)&sa,sizeof(sa));
-\end{lstlisting}
 i=sizeof(sa);
 n=recvfrom(sd,buf,sizeof(buf),0,(struct sockaddr*)&sa,&i);
 write(1,buf,n);
+\end{verbatim}
 \subsection{Analyse d'un programme serveur TCP}
 Socket utilisé: TCP
 socket()
@@ -156,8 +158,8 @@ accept()
 read/write()
 \\On retrouve l'enchaînement classique des appels systèmes.
 \\Ce programme compte le nombre de connexion.
-./pingserveur0 22222
-telnet localhost 22222
+%./pingserveur0 22222
+%telnet localhost 22222
 %copie d'écran Q7
 %copie d'écran Q7bis
 \subsection{Serveur TCP pingserveurTCP}
