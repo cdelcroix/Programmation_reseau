@@ -182,31 +182,33 @@ if((sd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
 	exit(1);
 }
 \end{verbatim}
-Pour mettre le service en oeuvre (\textcolor{green}{FTPPORT 13}) on écrit alors le code suivant.
+Pour mettre le service en oeuvre (\textcolor{green}{FTPPORT 13}) on écrit alors le code suivant:
 
-\begin{figure}[h!]
-\leftline{\includegraphics[width=14cm]{Illustrations/1}}
-\caption{\label{Illustrations/decoupage_etapes_2}Ecriture sur sdtout en UDP}
-\end{figure}
-On modifie SOCK\_STEAM par SOCK\_DGRAM
-Programme réalisé:
 \begin{verbatim}
+/* Ecriture sur stdout */
+//on envoie la requête
 sendto(sd,buf,sizeof(buf),0,(struct sockaddr*)&sa,sizeof(sa));
 i=sizeof(sa);
-n=recvfrom(sd,buf,sizeof(buf),0,(struct sockaddr*)&sa,&i);
+n =recvfrom(sd, buf,sizeof(buf),0,(struct sockaddr*)&sa,&i);
+//on affiche dans le buffer ce qu'on reçoit
 write(1,buf,n);
 \end{verbatim}
+
 \subsection{Analyse d'un programme serveur TCP}
-Socket utilisé: TCP
-socket()
-bind()
-listen()
-accept()
-read/write()
-\\On retrouve l'enchaînement classique des appels systèmes.
-\\Ce programme compte le nombre de connexion.
-./pingserveur0 22222
-telnet localhost 22222
+Socket utilisé: TCP.\\
+
+Pour un serveur TCP la procédure standard est:
+\begin{center}
+socket()\\
+bind()\\
+listen()\\
+accept()\\
+read/write()\\
+\end{center}
+On retrouve l'enchaînement suivant dans notre fichier.
+\\Ce programme compte le nombre de connexion.\\
+On le lance grâce à la commande ./pingserveur0 22222\\
+Puis on l'appelle grâce à telnet localhost 22222
 \begin{figure}[h!]
 \centerline{\includegraphics[width=10cm]{Illustrations/q7}}
 \caption{\label{Illustrations/q7} Côté serveur}
@@ -216,17 +218,6 @@ telnet localhost 22222
 \caption{\label{Illustrations/q7bis} Nouvelle connection}
 \end{figure}
 \subsection{Serveur TCP pingserveurTCP}
-\begin{figure}[h!]
-\centerline{\includegraphics[width=10cm]{Illustrations/q8}}
-\caption{\label{Illustrations/q8} Côté serveur}
-\end{figure}
-\begin{figure}[h!]
-\centerline{\includegraphics[width=10cm]{Illustrations/q8bis}}
-\caption{\label{Illustrations/q8bis} Côté client}
-\end{figure}
-%un autre Q8bis ?
-On ne peut pas prendre n'importe quel valeur de port. EN effet certain sont déjà attribués.
-newsd->client
 \begin{verbatim}
 while(1){
 int n=read(newsd,buf,sizeof(buf));
@@ -234,7 +225,17 @@ write(1,buf,n);
 write(newsd,buf,n);
 }
 \end{verbatim}
-Les valeurs des ports en cours d'utilisation ne peuvent être prises.
+On ne peut pas prendre n'importe quelle valeur de port. En effet certains sont déjà attribués.
+
+\begin{figure}[h!]
+\leftline{\includegraphics[width=14cm]{Illustrations/q8}}
+\caption{\label{Illustrations/q8}Côté serveur}
+\end{figure}
+\newpage%sinon ça bug...
+\begin{figure}[h!]
+\centerline{\includegraphics[width=10cm]{Illustrations/q8bis}}
+\caption{\label{Illustrations/q8bis} Côté client}
+\end{figure}
 \subsection{Serveur UDP pingserveurUDP, client TCP pingclientUDP}
 On souhaite réaliser un écho/ping entre un serveur et un client, ç'est à dire que le serveur renvoie tout ce qu'il a reçu de la part du client. 
 \\Après avoir copier le fichier \textit{pingserveurTCP0.c} dans les fichiers  \textit{pingserveurUDP.c} et  \textit{pingclientUDP.c}, on modifie le clientUDP.
