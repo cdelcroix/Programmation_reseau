@@ -82,6 +82,10 @@
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
 
 \title{
+\begin{figure}[H]
+\centering
+\includegraphics[]{Illustrations/eirb.jpg}
+\end{figure}
   %\vspace{-1in} 			
   \usefont{OT1}{bch}{b}{n}
   \horrule{1.5pt} \\[0.5cm]	
@@ -95,7 +99,9 @@
 \author{
   \huge \underline{Encadrant} : \LARGE Patrice KADIONIK\\[20pt]
   \normalfont 							
-  \huge \textbf{Equipe} : \Large Adrian BARBE - Charles DELCROIX \\[5pt]
+  \huge \textbf{Binôme} :\\[10pt]
+\Large Adrian BARBE - barbe.adrian@hotmail.fr\\[5pt]
+ \Large Charles DELCROIX - cdelcroix@enseirb-matmeca.fr \\[5pt]
 %rajouter adresses emails
   \normalsize
 }
@@ -103,6 +109,7 @@
 
 %%% Begin document
 \begin{document}
+
 \maketitle
 \newpage
 
@@ -111,129 +118,46 @@
 \newpage
 %-------------------------------------------------------------------------------------------------------------------------------------
 \section{But des travaux pratiques}
-Le but de ces TP est de maîtriser la programmation réseau par sockets par sockets en langage C sous UNIX.
+Le but de ces TP est de maîtriser la programmation réseau par sockets en langage C sous UNIX.
 %-------------------------------------------------------------------------------------------------------------------------------------
 \section{Utilisation des commandes unix}
 \subsection{Utilisation des commandes d'analyse réseau}
 Le but de netstat est de nous informer de tous les services qui tournent sur la machine.\\
-Les services sont alors divises en trois paquets:
-\begin{itemize}[label=$\square$,leftmargin=* ,parsep=0cm,itemsep=0cm,topsep=0cm]
-\item NTP
-\item socket du domaine UNIX 
-\item TCP
-\end{itemize}
+Les services sont alors divises en trois paquets: NTP, socket du domaine UNIX et TCP.\\
 netstat-a affiche quand à lui la table de routage IP du noyau
-\\telnet a pour but de se connecter à distance à une machine (nous utilisons pour le test de serveur).
+\\telnet a pour but de se connecter à distance à une machine (nous l'utilisons pour le test de serveurs).
 \subsection{Etude de quelques services Internet}
 telnet www.enseirb.fr 80 puis en appuyant sur entrée cela nous fait "sauter une ligne". En appuyant sur espace puis entrée cela nous affiche le code html de la page visitée puis cela nous ferme la connection.
 \\Après avoir récupéré index.html, le code de retour est "200". Ce code nous indique qu'il n'y a pas eu d'erreur.
 %-------------------------------------------------------------------------------------------------------------------------------------
 \section{Séances 1, 2 et 3: Programmation réseau par sockets}
 \subsection{Analyse d'un programme client TCP}
+
 On utilise une socket de type TCP. En effet on remarque la présence de SOCK\_STREAM dans le code. 
-Pour un client TCP la procédure standard est:\\
-socket()\\
+Pour un client TCP la procédure standard est:
+
+\begin{center}
+socket() \\
 connect()\\
 write/read()\\
+\end{center}
 On retrouve l'enchaînement suivant dans notre fichier.
-But du programme: code d'erreur 331, on demande d'établir une connection, il nous demande un mot de passe.
-% vérifier programme d'origine
-% ajouter copie écran
+Le programme nous renvoie un code d'erreur 331, on demande d'établir une connection, il nous demande un mot de passe.
+
 \subsection{Client TCP ftp myftp}
+Ajout effectué sur le code:
 \begin{verbatim}
+while(1){
 
-#define FTPPORT 21		/* Numero du port du serveur ftp */
-
-
-main(argc,argv)
-int argc ;
-char *argv[] ;
-
-{
-int sd;
-struct sockaddr_in sa;		/* Structure Internet sockaddr_in */
-struct hostent *hptr ; 		/* Infos sur le serveur */
-
-char *serveur ;        		/* Nom du serveur distant */
-char c;
-
-char msg[] = "USER TOTO\n"; 	/* Commande FTP */
-char buf[256]; 			/* Buffer */
-int n, i;
-
-
-/* verification du nombre d'arguments de la ligne de commande */
-if (argc != 2) {
-	printf("myftp. Erreur d'arguments\n");
-	printf("Syntaxe : %% myftp nom_serveur_ftp\n");
-	exit(1);
-}
-
-/* Recuperation nom du serveur */
-serveur = argv[1];
-
-/* Recuperation des infos sur le serveur dans /etc/hosts pour par DNS */
-if((hptr = gethostbyname(serveur)) == NULL) {
-	printf("Probleme de recuperation d'infos sur le serveur\n");
-	exit(1);
-}
-
-/* Initialisation la structure sockaddr sa avec les infos  formattees : */
-/* bcopy(void *source, void *destination, size_t taille); 		*/
-bcopy((char *)hptr->h_addr, (char*)&sa.sin_addr, hptr->h_length);
-
-/* Famille d'adresse : AF_INET = PF_INET */
-sa.sin_family = AF_INET;
-
-
-/* Initialisation du numero du port */
-sa.sin_port = htons(FTPPORT);
-
-/* Creation de la socket TCP */
-if((sd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-	printf("Probleme lors de la creation de socket\n");
-	exit(1);
-}
-
-/* Etablissement de la connexion avec le serveur ftp */
-if((connect(sd, (struct sockaddr *) &sa, sizeof(sa))) < 0 ) {
-	printf("Probleme de connexion avec le serveur\n");
-	exit(1);
-}
-
-
-/* Lecture de la banniere d'accueil du serveur ftp */
-n = read(sd, buf, sizeof(buf));
-
-/* Ecriture sur stdout */
+n=read(0, buf, sizeof(buf));
+write(sd, buf, n);
+n=read(sd, buf, sizeof(buf));
 write(1, buf, n);
-
-/* Envoi de la commande ftp vers serveur ftp */
-write(sd, msg, sizeof(msg));
-
-/* Lecture de la reponse du serveur ftp */
-n = read(sd, buf, sizeof(buf));
-write(1, buf, n);
-
-
- while(1){
-
-  n= read(0, buf, sizeof(buf));
-   write(sd, buf, n);
-  n=read(sd, buf, sizeof(buf));
-   write(1, buf, n);
    
 if(strncmp(buf,"QUIT\n",4)==0){
      close(sd);
      exit(0);
 }
-
-}
-
-/* Fermeture de la socket */
-close(sd);
-
-exit(0);
 }
 \end{verbatim}
 \begin{figure}[h!]
