@@ -131,7 +131,7 @@ Les services sont alors divises en trois paquets: NTP, socket du domaine UNIX et
 netstat-a affiche quand à lui la table de routage IP du noyau
 \\telnet a pour but de se connecter à distance à une machine (nous l'utilisons pour le test de serveurs).
 \subsection{Etude de quelques services Internet}
-telnet www.enseirb.fr 80 puis en appuyant sur entrée cela nous fait "sauter une ligne". En appuyant sur espace puis entrée cela nous affiche le code html de la page visitée puis cela nous ferme la connection.
+Après avoir entré la commande telnet www.enseirb.fr 80, en appuyant sur entrée cela nous fait "sauter une ligne". En appuyant sur espace puis entrée cela nous affiche le code html de la page visitée puis cela nous ferme la connection.
 \\Après avoir récupéré index.html, le code de retour est "200". Ce code nous indique qu'il n'y a pas eu d'erreur.
 %-------------------------------------------------------------------------------------------------------------------------------------
 \section{Séances 1, 2 et 3: Programmation réseau par sockets}
@@ -229,7 +229,7 @@ write(1,buf,n);
 write(newsd,buf,n);
 }
 \end{verbatim}
-On ne peut pas prendre n'importe quelle valeur de port. En effet certains sont déjà attribués.
+On ne peut pas prendre n'importe quelle valeur de port. En effet certains sont déjà attribuées.
 
 \begin{figure}[h!]
 \leftline{\includegraphics[width=14cm]{Illustrations/q8}}
@@ -241,7 +241,7 @@ On ne peut pas prendre n'importe quelle valeur de port. En effet certains sont d
 \caption{\label{Illustrations/q8bis} Côté client}
 \end{figure}
 \subsection{Serveur UDP pingserveurUDP, client TCP pingclientUDP}
-On souhaite réaliser un écho/ping entre un serveur et un client, ç'est à dire que le serveur renvoie tout ce qu'il a reçu de la part du client. 
+On souhaite réaliser un écho/ping entre un serveur et un client, c'est à dire que le serveur renvoie tout ce qu'il a reçu de la part du client. 
 \\Après avoir copier le fichier \textit{pingserveurTCP0.c} dans les fichiers  \textit{pingserveurUDP.c} et  \textit{pingclientUDP.c}, on modifie le clientUDP:
 \begin{verbatim}
 while(1){
