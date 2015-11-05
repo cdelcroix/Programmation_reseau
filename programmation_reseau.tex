@@ -291,8 +291,14 @@ exit(0);
 \centerline{\includegraphics[width=15cm]{Illustrations/q10bis}}
 \caption{\label{Illustrations/q10bis} Côté client}
 \end{figure}
-
 \subsection{Serveur TCP lotoserveur}
-
+Après le exit(1) du dernier programme on remplace la boucle while(1) par:
+\begin{verbatim}
+for(i=0;i<6;i++){
+j=((rand())%49)+1;
+sprintf(buf,"%d",j);
+write(newsd,buf,sizeof(buf));
+}
+\end{verbatim}
 %%% End document
 \end{document}
