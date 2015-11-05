@@ -238,28 +238,60 @@ On ne peut pas prendre n'importe quelle valeur de port. En effet certains sont d
 \end{figure}
 \subsection{Serveur UDP pingserveurUDP, client TCP pingclientUDP}
 On souhaite réaliser un écho/ping entre un serveur et un client, ç'est à dire que le serveur renvoie tout ce qu'il a reçu de la part du client. 
-\\Après avoir copier le fichier \textit{pingserveurTCP0.c} dans les fichiers  \textit{pingserveurUDP.c} et  \textit{pingclientUDP.c}, on modifie le clientUDP.
+\\Après avoir copier le fichier \textit{pingserveurTCP0.c} dans les fichiers  \textit{pingserveurUDP.c} et  \textit{pingclientUDP.c}, on modifie le clientUDP:
+\begin{verbatim}
+while(1){
+//On envoie ce qu'on lit sur l'entrée standard
+m=read(0,buf,sizeof(buf));
+sendto(sd,buf,m,0,(struct sockaddr*)&sa,sizeof(sa));
 
-\begin{figure}[h!]
-\leftline{\includegraphics[width=14cm]{Illustrations/3}}
-\caption{\label{Illustrations/decoupage_etapes_2}Ping client UDP}
-\end{figure}
-Ainsi que le serveurUDP de cette façon.
-\begin{figure}[h!]
-\leftline{\includegraphics[width=14cm]{Illustrations/2}}
-\caption{\label{Illustrations/decoupage_etapes_2}Ping serveur UDP}
-\end{figure}
+//On affiche la réponse du serveur
+i=sizeof(sa);
+n =recvfrom(sd, buf,sizeof(buf),0,(struct sockaddr*)&sa,&i);
+write(1,buf,n);
+}
+\end{verbatim}
+Ainsi que le serveurUDP de cette façon:
+\begin{verbatim}
+while(1) {
+//On reçoit le message du client
+salength = sizeof(sa);
+int n=recvfrom(sd,buf,sizeof(buf),0,(struct sockaddr*)&sa,&salength);
 
+//On le renvoit et on l'affiche (pas obligatoire)
+write(1,buf,n);
+sendto(sd,buf,n,0,(struct sockaddr*)&sa,sizeof(sa));
+
+}	
+\end{verbatim}
+\newpage%encore le bug
 \subsection{Serveur wwwserveur}
 Pour accéder à un serveur web on utilise le protocole HTTP.
+\begin{verbatim}
+while(1) {
+ /* Ne pas oublier : newsalength contient la taille de la structure sa attendue */
+newsalength = sizeof(newsa) ;
+if((newsd = accept(sd, ( struct sockaddr * ) &newsa, &newsalength)) < 0 ) {
+printf("Erreur sur accept\n");
+exit(1);
+}
+while(1){
+write(newsd,accueil,sizeof(accueil));
+close(newsd);
+printf("Fin du serveur. Bye...\n");
+exit(0);
+}	
+}
+\end{verbatim}
 \begin{figure}[h!]
-\centerline{\includegraphics[width=10cm]{Illustrations/q10}}
+\centerline{\includegraphics[width=15cm]{Illustrations/q10}}
 \caption{\label{Illustrations/q10} Côté serveur}
 \end{figure}
 \begin{figure}[h!]
-\centerline{\includegraphics[width=10cm]{Illustrations/q10bis}}
+\centerline{\includegraphics[width=15cm]{Illustrations/q10bis}}
 \caption{\label{Illustrations/q10bis} Côté client}
 \end{figure}
+
 \subsection{Serveur TCP lotoserveur}
 
 %%% End document
